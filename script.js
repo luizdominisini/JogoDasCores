@@ -1,4 +1,4 @@
-const colors = [
+const todasCores = [
   "AliceBlue",
   "AntiqueWhite",
   "Aqua",
@@ -141,6 +141,40 @@ const colors = [
   "YellowGreen",
 ];
 
-const extrair = Math.random() * 100 + 40
+function selecionarCoresAleatorias(lista, quantidade) {
+  const coresSelecionadas = [];
+  const listaDisponivel = [...lista];
+  for (let i = 0; i < quantidade; i++) {
+    const indexAleatorio = Math.floor(Math.random() * listaDisponivel.length);
+    coresSelecionadas.push(listaDisponivel.splice(indexAleatorio, 1)[0]);
+  }
+  return coresSelecionadas;
+}
 
-console.log(extrair);
+function escolherCorSecreta(cores) {
+  const indexAleatorio = Math.floor(Math.random() * cores.length);
+  return cores[indexAleatorio];
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const coresAleatorias = selecionarCoresAleatorias(todasCores, 10);
+  const corSecreta = escolherCorSecreta(coresAleatorias);
+
+  console.log("Cores disponíveis: ", coresAleatorias);
+  console.log("Cor secreta: ", corSecreta);
+
+  const input = document.querySelector("#input-cor");
+  const feedback = document.querySelector("#feedback");
+  const botao = document.querySelector("#botao-enviar");
+
+  botao.addEventListener("click", () => {
+    const tentativa = input.value.trim();
+    if (tentativa === corSecreta) {
+      feedback.textContent = "Parabéns! Você acertou!";
+      document.body.style.backgroundColor = corSecreta;
+    } else {
+      const dica = tentativa < corSecreta ? "depois" : "antes";
+      feedback.textContent = `Tente novamente! A cor está ${dica} de "${tentativa}" na ordem alfabética.`;
+    }
+  });
+});
